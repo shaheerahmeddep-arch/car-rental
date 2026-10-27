@@ -1,0 +1,364 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* =========================================================
+   Shaheer Car Rental System — design tokens & base styles
+   Palette: Deep red (#C8102E) as the signature accent, set
+   against a near-black charcoal in dark mode and a warm
+   paper white in light mode. Poppins carries headlines,
+   Inter carries body copy.
+   Every color below is a CSS variable so the semantic
+   Tailwind tokens in tailwind.config.js (bg, ink, line,
+   accent, …) flip automatically with [data-theme].
+   ========================================================= */
+
+:root {
+  --font-display: 'Poppins', 'Segoe UI', sans-serif;
+  --font-body: 'Inter', 'Segoe UI', sans-serif;
+    --nav: #120d0e;
+
+  --red-600: #c8102e;
+  --red-700: #a50d26;
+  --red-500: #e2213f;
+  --red-400: #ef4a63;
+  --red-100: #fbe1e5;
+
+  --radius-sm: 8px;
+  --radius-md: 14px;
+  --radius-lg: 22px;
+
+  --shadow-card: 0 10px 30px rgba(20, 16, 15, 0.18);
+  --shadow-soft: 0 4px 14px rgba(20, 16, 15, 0.10);
+
+  --container-width: 1180px;
+  --transition-fast: 180ms ease;
+  --transition-med: 320ms cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+@layer base {
+  /* Dark theme (default) */
+  :root,
+  [data-theme='dark'] {
+    --bg: #14100f;
+    --bg-elevated: #1c1614;
+    --bg-card: #221a18;
+    --text-primary: #f6efec;
+    --text-secondary: #c9b9b3;
+    --text-muted: #8f7d77;
+    --border-color: #3a2c28;
+    --accent: var(--red-500);
+    --accent-strong: var(--red-600);
+    --accent-contrast: #ffffff;
+    --nav-bg: #120d0e;
+  }
+
+  /* Light theme */
+  [data-theme='light'] {
+    --bg: #faf7f5;
+    --bg-elevated: #ffffff;
+    --bg-card: #ffffff;
+    --text-primary: #201613;
+    --text-secondary: #5a4842;
+    --text-muted: #8c7a73;
+    --border-color: #ecdfda;
+    --accent: var(--red-600);
+    --accent-strong: var(--red-700);
+    --accent-contrast: #ffffff;
+    --nav-bg: rgba(250, 247, 245, 0.88);
+  }
+
+  *,
+  ::before,
+  ::after {
+    box-sizing: border-box;
+  }
+
+  html {
+    scroll-behavior: smooth;
+  }
+
+  body {
+    @apply m-0 bg-bg font-body text-ink antialiased;
+    transition: background var(--transition-med), color var(--transition-med);
+  }
+
+  h1, h2, h3, h4 {
+    @apply mb-2 font-display leading-[1.15] tracking-tight;
+  }
+
+  p {
+    @apply leading-[1.65] text-ink-soft;
+  }
+
+  a {
+    @apply text-inherit no-underline;
+  }
+
+  ::selection {
+    background: color-mix(in srgb, var(--accent) 32%, transparent);
+  }
+
+  /* Keeps the footer from snapping up while a route's enter animation plays
+     and on short pages (login, 404). */
+  main {
+    min-height: 62vh;
+  }
+
+  img {
+    @apply block max-w-full;
+  }
+
+  button {
+    @apply cursor-pointer font-body;
+  }
+
+  a:focus-visible,
+  button:focus-visible,
+  input:focus-visible,
+  select:focus-visible,
+  textarea:focus-visible {
+    outline: 2px solid var(--accent);
+    outline-offset: 2px;
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    *, ::before, ::after {
+      animation-duration: 0.001ms !important;
+      transition-duration: 0.001ms !important;
+      scroll-behavior: auto !important;
+    }
+  }
+}
+
+@layer components {
+  /* Layout primitives */
+  .container {
+    @apply mx-auto w-full max-w-[1180px] px-6;
+  }
+
+  .section {
+    @apply py-14 sm:py-[84px];
+  }
+
+  .section-dark {
+    @apply bg-elevated;
+  }
+
+  .section-head {
+    @apply mb-11 max-w-[620px];
+  }
+
+  .section-head h2 {
+    @apply text-[clamp(1.8rem,3vw,2.5rem)] font-bold;
+  }
+
+  .section-head p {
+    @apply text-[1.05rem];
+  }
+
+  /* Buttons */
+  .btn {
+    @apply inline-flex items-center justify-center gap-2 rounded-full border-none px-7 py-[13px] text-[0.95rem] font-semibold transition-all duration-[180ms] ease-out;
+  }
+
+  .btn-primary {
+    @apply bg-accent text-white shadow-accent-glow hover:-translate-y-0.5 hover:bg-accent-strong hover:shadow-accent-glow-lg;
+  }
+
+  .btn-ghost {
+    @apply border-[1.5px] border-line bg-transparent text-ink hover:border-accent hover:text-accent;
+  }
+
+  .btn:disabled {
+    @apply translate-y-0 cursor-not-allowed opacity-55 shadow-none;
+  }
+
+  /* Cards */
+  .card {
+    @apply overflow-hidden rounded-[22px] border border-line bg-surface transition-all duration-[320ms] ease-smooth;
+  }
+
+  .card:hover {
+    @apply -translate-y-1.5 border-accent shadow-card;
+  }
+
+  .card-static:hover {
+    @apply translate-y-0 border-line shadow-none;
+  }
+
+  /* Forms */
+  .field {
+    @apply mb-4 flex flex-col gap-1.5;
+  }
+
+  .field label {
+    @apply text-[0.85rem] font-semibold text-ink-soft;
+  }
+
+  .field input,
+  .field select,
+  .field textarea {
+    @apply rounded-[8px] border-[1.5px] border-line bg-bg px-3.5 py-[11px] font-body text-[0.95rem] text-ink transition-colors duration-[180ms];
+  }
+
+  .field input:focus,
+  .field select:focus,
+  .field textarea:focus {
+    @apply border-accent;
+  }
+
+  .input {
+    @apply w-full rounded-[8px] border-[1.5px] border-line bg-bg px-3.5 py-[11px] font-body text-[0.95rem] text-ink transition-colors duration-[180ms] focus:border-accent;
+  }
+
+  /* Date & time inputs (booking form): icon inside the field, hover/focus
+     glow, and a filled-state tint. Layered on top of .field input. */
+  .dt-control {
+    position: relative;
+  }
+
+  .dt-control .dt-icon {
+    position: absolute;
+    left: 13px;
+    top: 50%;
+    z-index: 1;
+    display: flex;
+    align-items: center;
+    color: var(--text-muted);
+    pointer-events: none;
+    transform: translateY(-50%);
+    transition:
+      color 220ms cubic-bezier(0.22, 1, 0.36, 1),
+      transform 220ms cubic-bezier(0.22, 1, 0.36, 1);
+  }
+
+  .dt-control:focus-within .dt-icon {
+    color: var(--accent);
+    transform: translateY(-50%) scale(1.12);
+  }
+
+  .dt-control .dt-input {
+    width: 100%;
+    padding-left: 42px;
+    transition:
+      border-color 220ms cubic-bezier(0.22, 1, 0.36, 1),
+      box-shadow 220ms cubic-bezier(0.22, 1, 0.36, 1);
+  }
+
+  .dt-control .dt-input:hover {
+    border-color: color-mix(in srgb, var(--accent) 45%, var(--border-color));
+  }
+
+  .dt-control .dt-input:focus {
+    border-color: var(--accent);
+    box-shadow:
+      0 0 0 3px color-mix(in srgb, var(--accent) 16%, transparent),
+      0 8px 20px rgba(200, 16, 46, 0.16);
+  }
+
+  /* Filled-state feedback: required inputs become :valid once the user
+     picks a date/time, so the border and icon pick up a soft accent tint. */
+  .dt-control:has(.dt-input:valid) .dt-input {
+    border-color: color-mix(in srgb, var(--accent) 30%, var(--border-color));
+  }
+
+  .dt-control:has(.dt-input:valid) .dt-icon {
+    color: var(--accent);
+  }
+
+  .dt-input::-webkit-calendar-picker-indicator {
+    cursor: pointer;
+    opacity: 0.55;
+    transition: opacity 180ms ease;
+  }
+
+  .dt-input:hover::-webkit-calendar-picker-indicator {
+    opacity: 1;
+  }
+
+  /* The indicator glyph is dark by default; dark theme needs it inverted,
+     light theme must keep it as-is or it would vanish on the white field. */
+  [data-theme='dark'] .dt-input::-webkit-calendar-picker-indicator {
+    filter: invert(1);
+  }
+
+  .field-error {
+    @apply text-[0.8rem] text-brand-500;
+  }
+
+  .grid-2 {
+    @apply grid grid-cols-1 gap-3.5 sm:grid-cols-2;
+  }
+
+  /* Status badges (positioned over car images) */
+  .badge {
+    @apply absolute left-3 top-3 rounded-full px-3 py-[5px] text-[0.72rem] font-bold;
+  }
+
+  .badge-available {
+    @apply bg-success text-white;
+  }
+
+  .badge-booked {
+    @apply bg-accent text-white;
+  }
+
+  /* Delete/action confirmation dialog */
+  .confirm-overlay {
+    @apply fixed inset-0 z-[1100] flex animate-fade-in items-center justify-center bg-[rgba(10,8,7,0.66)] p-6;
+  }
+
+  .confirm-box {
+    @apply w-full max-w-[420px] animate-pop-in rounded-[14px] border border-line bg-elevated p-6 shadow-card;
+  }
+
+  .confirm-box h3 {
+    @apply mb-2 text-[1.1rem];
+  }
+
+  .confirm-box p {
+    @apply mb-5 text-[0.92rem];
+  }
+
+  .confirm-actions {
+    @apply flex justify-end gap-2.5;
+  }
+
+  .confirm-actions .btn {
+    @apply px-[22px] py-2.5 text-[0.85rem];
+  }
+
+  /* Admin page status banner (replaces alert()) */
+  .admin-banner {
+    @apply mb-4 flex items-center justify-between gap-3 rounded-[8px] px-3.5 py-2.5 text-[0.88rem];
+  }
+
+  .admin-banner-error {
+    @apply border border-brand-500 bg-brand-100 text-brand-700;
+  }
+
+  .admin-banner-success {
+    @apply border border-success bg-success/10 text-success;
+  }
+
+  .admin-banner button {
+    @apply border-none bg-transparent p-0 px-1 text-base text-inherit;
+  }
+
+  /* Scroll reveal (class toggled by useReveal IntersectionObserver) */
+  .reveal {
+    @apply translate-y-[18px] opacity-0 transition-all duration-[600ms] ease-out;
+  }
+
+  .reveal.is-visible {
+    @apply translate-y-0 opacity-100;
+  }
+
+  /* Loading skeleton — the gradient needs real CSS vars */
+  .skeleton {
+    @apply animate-shimmer rounded-[8px];
+    background: linear-gradient(90deg, var(--bg-elevated) 25%, var(--border-color) 50%, var(--bg-elevated) 75%);
+    background-size: 200% 100%;
+  }
+}
